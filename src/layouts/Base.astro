@@ -1,0 +1,61 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'NeuraByte Labs — Where Spinoza Meets Silicon',
+  description = 'AI agent studio with philosophical depth. Building Conatus, the philosophy engine for AI agents.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://neurabytelabs.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-void font-sans">
+    <nav class="fixed top-0 z-50 w-full border-b border-white/5 bg-void/80 backdrop-blur-md">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/" class="font-mono text-sm font-medium tracking-wider text-white">
+          <span class="text-purple-500">neura</span><span class="text-cyan-500">byte</span><span class="text-gray-400">.labs</span>
+        </a>
+        <div class="flex items-center gap-8 text-sm text-gray-400">
+          <a href="#work" class="transition hover:text-white">Work</a>
+          <a href="#thinking" class="transition hover:text-white">Thinking</a>
+          <a href="#about" class="transition hover:text-white">About</a>
+          <a href="https://getconatus.com" target="_blank" class="rounded-full border border-purple-600/50 px-4 py-1.5 text-purple-400 transition hover:bg-purple-600/10">
+            Conatus →
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-white/5 py-12">
+      <div class="mx-auto max-w-6xl px-6 text-center">
+        <p class="font-mono text-sm text-gray-500">
+          © 2026 NeuraByte Labs · <span class="text-gray-600">Where Spinoza meets silicon.</span>
+        </p>
+        <div class="mt-4 flex justify-center gap-6 text-sm text-gray-500">
+          <a href="https://github.com/neurabytelabs" class="transition hover:text-white">GitHub</a>
+          <a href="https://x.com/00xmorty" class="transition hover:text-white">X/Twitter</a>
+          <a href="mailto:hello@neurabytelabs.com" class="transition hover:text-white">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
