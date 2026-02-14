@@ -3,16 +3,16 @@ initBlogShader(`
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
-uniform vec4 iMouse;
+uniform vec2 iMouse;
 uniform sampler2D iChannel0;
 out vec4 fragColor;
 
 void main() {
     // Coordinate setup
     vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.y, iResolution.x);
-    vec2 m = iMouse.xy / iResolution.xy;
+    vec2 m = iMouse;
     m.y = 1.0 - m.y; // Correct Y-flip
-    vec2 mUV = (m - 0.5) * (iResolution.xy / min(iResolution.y, iResolution.x));
+    vec2 mUV = (m - 0.5) * 2.0;
     float mDist = length(uv - mUV);
     
     // Interaction: External disruption field

@@ -10,7 +10,7 @@ float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.545
 void main() {
     vec2 R = iResolution.xy;
     vec2 uv = (gl_FragCoord.xy - 0.5 * R) / R.y;
-    vec2 m = (iMouse - 0.5) * vec2(R.x / R.y, 1.0);
+    vec2 m_raw = iMouse; m_raw.y = 1.0 - m_raw.y; vec2 m = (m_raw - 0.5) * 2.0;
     vec3 col = vec3(0.015, 0.005, 0.0);
     float t = iTime * 0.5;
     float pulse = sin(t * 1.2) * 0.1 + 0.9;

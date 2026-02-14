@@ -19,7 +19,7 @@ vec2 node(float i) {
 
 void main() {
     vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.y, iResolution.x);
-    vec2 m = (iMouse - 0.5) * (iResolution / min(iResolution.y, iResolution.x));
+    vec2 m_raw = iMouse; m_raw.y = 1.0 - m_raw.y; vec2 m = (m_raw - 0.5) * 2.0;
     vec3 col = vec3(0.01, 0.005, 0.04) * (1.2 - length(uv));
     float g = 0.0;
     

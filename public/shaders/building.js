@@ -20,7 +20,7 @@ float f(vec2 p) {
 void main() {
     vec2 uv = gl_FragCoord.xy / iResolution.xy;
     vec2 p = (gl_FragCoord.xy - .5 * iResolution.xy) / iResolution.y;
-    vec2 m = (iMouse - .5) * (iResolution / iResolution.y);
+    vec2 m = iMouse; m.y = 1.0 - m.y; vec2 mPos = (m - 0.5) * 2.0; m = mPos;
     
     float dM = length(p - m), mF = exp(-dM * 8.0);
     p += (p - m) * mF * 0.4; // Bend coordinate space toward mouse
