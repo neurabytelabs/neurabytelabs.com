@@ -10,8 +10,8 @@ void main() {
     // Coordinate setup
     vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.y, iResolution.x);
     vec2 m = iMouse;
-    m.y = 1.0 - m.y; // Correct Y-flip
-    vec2 mUV = (m - 0.5) * 2.0;
+    m.y = 1.0 - m.y;
+    vec2 mUV = (m - 0.5) * iResolution.xy / min(iResolution.y, iResolution.x);
     float mDist = length(uv - mUV);
     
     // Interaction: External disruption field
@@ -40,12 +40,12 @@ void main() {
     
     // Apply disruption: The structure dims and breaks where the mouse touches
     // But it never truly disappears, representing the drive to persist
-    col *= d * 0.14 * (1.0 - disrupt * 0.75);
+    col *= d * 0.4 * (1.0 - disrupt * 0.75);
     col += sparks * mix(cyan, purple, noise);
     
     // Temporal trails (The system persevering through time)
     vec4 prev = texture(iChannel0, gl_FragCoord.xy / iResolution.xy);
-    fragColor = vec4(col, 1.0) * 0.18 + prev * 0.84;
+    fragColor = vec4(col, 1.0) * 0.35 + prev * 0.75;
     
     // Vignette and final polish
     float vig = smoothstep(1.2, 0.3, length(uv));
