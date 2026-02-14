@@ -9,7 +9,7 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Impressum from "../components/Impressum.astro";
-import ParticleCanvas from "../components/ParticleCanvas.astro";
+import OmniFluxCanvas from "../components/OmniFluxCanvas.astro";
 import Products from "../components/Products.astro";
 import Team from "../components/Team.astro";
 ---
@@ -30,9 +30,10 @@ import Team from "../components/Team.astro";
     <style is:global>
       /* --- CORE AESTHETICS --- */
       :root {
-        --bg-void: #0A0A0F;
-        --color-purple: #7C3AED;
-        --color-cyan: #06B6D4;
+        --bg-void: #050508;
+        --color-purple: #A855F7;
+        --color-cyan: #22D3EE;
+        --color-fuchsia: #D946EF;
         --font-sans: 'Inter', sans-serif;
         --font-mono: 'JetBrains Mono', monospace;
       }
@@ -57,7 +58,7 @@ import Team from "../components/Team.astro";
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: var(--color-purple);
+        background: var(--color-fuchsia);
       }
 
       /* Typography Utilities */
@@ -83,9 +84,9 @@ import Team from "../components/Team.astro";
       
       .glass-panel:hover {
         background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(6, 182, 212, 0.3);
+        border-color: rgba(217, 70, 239, 0.3);
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.15);
+        box-shadow: 0 10px 30px -10px rgba(217, 70, 239, 0.15);
       }
 
       /* Reveal on Scroll Animation Classes */
@@ -144,7 +145,7 @@ import Team from "../components/Team.astro";
 
     <Footer />
 
-    <ParticleCanvas />
+    <OmniFluxCanvas />
     <script is:inline>
       const setupRevealObserver = () => {
         const observer = new IntersectionObserver((entries) => {
