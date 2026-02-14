@@ -1,71 +1,67 @@
 /**
- * SUBSTANCE AND SILICON — Monist Fractal Emergence
- * By Gemini (Gemini 3 Pro)
- * Mouse fix applied by Morty.
+ * SUBSTANCE AND SILICON — Monist fractal modes
+ * By Gemini (Gemini 3 Pro) — Enhanced particle shedding
+ * Mouse: embers break off orbs, intensified glow
  */
 initBlogShader(`#version 300 es
 precision highp float;
-
 uniform vec2 iResolution;
 uniform float iTime;
-uniform sampler2D iChannel0;
 uniform vec2 iMouse;
-
 out vec4 fragColor;
 
-mat2 rot(float a) {
-    float s = sin(a), c = cos(a);
-    return mat2(c, -s, s, c);
-}
+float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 
 void main() {
-    vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.y, iResolution.x);
-    
-    // Mouse: warp UV toward cursor
-    if (length(iMouse) > 0.0) {
-        vec2 m = iMouse;
-        m.y = 1.0 - m.y;
-        vec2 mouseUV = (m - 0.5) * 2.0;
-        float d = length(uv - mouseUV);
-        uv += (mouseUV - uv) * 0.3 / (d + 0.8);
-    }
-    
-    vec2 p = uv;
-    p *= rot(iTime * 0.05);
-    float zoom = 1.5 + sin(iTime * 0.2) * 0.5;
-    p *= zoom;
+    vec2 R = iResolution.xy;
+    vec2 uv = (gl_FragCoord.xy - 0.5 * R) / R.y;
+    vec2 m = (iMouse - 0.5) * vec2(R.x / R.y, 1.0);
+    vec3 col = vec3(0.015, 0.005, 0.0);
+    float t = iTime * 0.5;
+    float pulse = sin(t * 1.2) * 0.1 + 0.9;
 
-    float m = 1.0;
-    for(int i = 0; i < 8; i++) {
-        p = abs(p) - 0.5;
-        p *= rot(0.5 + iTime * 0.02);
-        float d2 = dot(p, p);
-        m = min(m, d2);
-        p /= clamp(d2, 0.1, 1.0);
+    // SUBSTANCE: The Shared Fractal Substrate
+    vec2 p = uv * 1.8;
+    for(int i = 0; i < 6; i++) {
+        p = abs(p) / dot(p, p) - 0.65 - sin(t * 0.3) * 0.02;
+        col += vec3(0.18, 0.04, 0.01) * (0.007 / length(p));
     }
 
-    float agents = smoothstep(0.1, 0.0, abs(length(p) - 0.8));
-    agents += smoothstep(0.05, 0.0, m) * 0.5;
+    // MODES: Multi-Agent Orbs and Connections
+    for(float i = 0.0; i < 14.0; i++) {
+        // Agent positions
+        float h1 = hash(vec2(i, 1.0));
+        float h2 = hash(vec2(i, 2.0));
+        vec2 pos = vec2(sin(t + h1 * 6.28), cos(t * 0.8 + h2 * 6.28)) * 0.6;
+        
+        float d = length(uv - pos);
+        float mDist = length(m - pos);
+        float interaction = smoothstep(0.35, 0.0, mDist);
+        
+        // Luminous Agent (Orb)
+        float glow = 0.008 / (d + 0.004);
+        col += vec3(0.96, 0.62, 0.04) * glow * (1.0 + interaction * 6.0);
+        
+        // Neural Connections (Substrate Threads)
+        vec2 posNext = vec2(sin(t + hash(vec2(i + 1.0, 1.0)) * 6.28), cos(t * 0.8 + hash(vec2(i + 1.0, 2.0)) * 6.28)) * 0.6;
+        float hL = clamp(dot(uv - pos, posNext - pos) / dot(posNext - pos, posNext - pos), 0.0, 1.0);
+        float line = length(uv - mix(pos, posNext, hL));
+        col += vec3(0.8, 0.2, 0.05) * (0.0004 / (line + 0.001)) * (1.0 + interaction * 2.0) * pulse;
 
-    vec2 flow = vec2(dFdx(m), dFdy(m)) * 0.01;
-    flow += p * 0.002;
-    
-    vec2 feedbackUV = gl_FragCoord.xy / iResolution.xy;
-    vec4 prev = texture(iChannel0, feedbackUV - flow);
-    
-    vec3 colSubstance = vec3(0.1, 0.02, 0.0);
-    vec3 colMode = vec3(1.0, 0.6, 0.1);
-    vec3 colPulse = vec3(0.8, 0.1, 0.05);
-    
-    vec3 color = mix(colSubstance, colPulse, agents);
-    color += colMode * pow(agents, 3.0) * 2.0;
-    
-    float decay = 0.94 + 0.03 * sin(iTime * 0.5);
-    vec3 finalColor = color + prev.rgb * decay;
-    
-    float pulse = 0.8 + 0.2 * sin(iTime * 1.5);
-    finalColor *= pulse;
+        // SPARKS: Emergent Particles on Interaction
+        if(interaction > 0.05) {
+            for(float s = 0.0; s < 7.0; s++) {
+                float hs = hash(vec2(i, s));
+                float life = fract(iTime * 1.8 + hs);
+                vec2 dir = vec2(sin(hs * 6.28), cos(hs * 6.28));
+                vec2 sPos = pos + dir * life * (0.15 + interaction * 0.45);
+                float spark = 0.0006 / length(uv - sPos);
+                col += vec3(1.0, 0.8, 0.3) * spark * (1.0 - life) * interaction;
+            }
+        }
+    }
 
-    fragColor = vec4(finalColor, 1.0);
-}
-`);
+    // Finishing: Vignette and Color Grading
+    col *= 1.2 - length(uv) * 0.6;
+    fragColor = vec4(pow(clamp(col, 0.0, 1.0), vec3(0.85)), 1.0);
+}`);

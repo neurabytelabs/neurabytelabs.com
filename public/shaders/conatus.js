@@ -1,89 +1,61 @@
 /**
  * CONATUS — "The striving to persevere in being"
- * By Morty (Claude Opus 4.6)
- * 
- * Mathematical metaphor: Strange Attractor
- * Particles want to dissipate into entropy, but conatus — the innate
- * drive to persist — pulls them back into coherent structure.
- * The feedback loop IS the conatus: each frame feeds into the next.
- * Purple/cyan: tension between mind (purple) and matter (cyan).
+ * By Gemini (Gemini 3 Pro) — Redesigned with master prompt
+ * Mouse: particles break off on hover, attractor persists (= conatus)
  */
-initBlogShader(`#version 300 es
+initBlogShader(`
+#version 300 es
 precision highp float;
-
 uniform vec2 iResolution;
 uniform float iTime;
+uniform vec4 iMouse;
 uniform sampler2D iChannel0;
-uniform vec2 iMouse;
-
 out vec4 fragColor;
 
-vec3 lorenz(vec3 p) {
-    float sigma = 10.0, rho = 28.0, beta = 2.6667;
-    return vec3(
-        sigma * (p.y - p.x),
-        p.x * (rho - p.z) - p.y,
-        p.x * p.y - beta * p.z
-    );
-}
-
-vec2 rotate(vec2 v, float a) {
-    float s = sin(a), c = cos(a);
-    return mat2(c, -s, s, c) * v;
-}
-
 void main() {
-    vec2 r = iResolution;
-    float t = iTime * 0.3;
-    vec2 FC = gl_FragCoord.xy;
-    vec2 uv = (FC * 2.0 - r) / r.y;
+    // Coordinate setup
+    vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.y, iResolution.x);
+    vec2 m = iMouse.xy / iResolution.xy;
+    m.y = 1.0 - m.y; // Correct Y-flip
+    vec2 mUV = (m - 0.5) * (iResolution.xy / min(iResolution.y, iResolution.x));
+    float mDist = length(uv - mUV);
     
-    // Mouse: warp UV toward cursor — lens attraction effect
-    vec2 mouseUV = vec2(0.0);
-    if (length(iMouse) > 0.0) {
-        vec2 m = iMouse;
-        m.y = 1.0 - m.y;
-        mouseUV = (m - 0.5) * 2.0; // centered -1..1
-        float d = length(uv - mouseUV);
-        uv += (mouseUV - uv) * 0.3 / (d + 0.8); // attract toward mouse
+    // Interaction: External disruption field
+    float disrupt = smoothstep(0.45, 0.0, mDist);
+    float noise = fract(sin(dot(uv * 13.0 + iTime * 0.8, vec2(12.98, 78.23))) * 437.58);
+    
+    // Conatus: The System's Core (Strange Attractor approximation)
+    // The system subtly follows the mouse but maintains its internal logic
+    vec3 p = vec3(uv * 1.15 - mUV * disrupt * 0.2, 0.6 + 0.2 * sin(iTime * 0.2));
+    float d = 0.0;
+    mat2 rot = mat2(cos(iTime * 0.12), sin(iTime * 0.12), -sin(iTime * 0.12), cos(iTime * 0.12));
+    for(int i = 0; i < 10; i++) {
+        p = abs(p) / dot(p, p) - 0.82;
+        p.yz *= rot;
+        p.xy *= rot;
+        d += exp(-5.5 * length(p));
     }
     
-    vec4 o = vec4(0.0);
-    vec3 pos = vec3(uv * 15.0, sin(t) * 10.0);
+    // Particle Shedding: Fragments breaking off near the mouse
+    float sparks = smoothstep(0.96, 1.0, noise) * disrupt * 4.0;
     
-    for (float i = 0.0; i < 7.0; i++) {
-        vec3 dp = lorenz(pos) * 0.002;
-        pos += dp;
-        
-        vec2 projected = pos.xy * 0.02;
-        projected = rotate(projected, t * 0.1 + i * 0.5);
-        
-        float d = length(uv - projected);
-        float glow = 0.008 / (d * d + 0.01);
-        
-        float phase = i * 0.7 + t * 0.2;
-        vec3 col = vec3(
-            0.4 + 0.4 * sin(phase),
-            0.1 + 0.2 * sin(phase + 2.094),
-            0.5 + 0.4 * sin(phase + 4.189)
-        );
-        
-        o.rgb += glow * col;
-    }
+    // Color System: Purple (#A855F7) and Cyan (#22D3EE)
+    vec3 purple = vec3(0.658, 0.333, 0.968);
+    vec3 cyan = vec3(0.133, 0.827, 0.933);
+    vec3 col = mix(purple, cyan, 0.5 + 0.4 * sin(d * 0.2 + iTime));
     
-    vec2 entropy = vec2(
-        sin(uv.y * 3.0 + t * 0.5) * 0.003,
-        cos(uv.x * 3.0 + t * 0.4) * 0.003
-    );
-    vec2 feedbackUV = FC.xy / r + entropy;
-    feedbackUV = (feedbackUV - 0.5) * 0.997 + 0.5;
+    // Apply disruption: The structure dims and breaks where the mouse touches
+    // But it never truly disappears, representing the drive to persist
+    col *= d * 0.14 * (1.0 - disrupt * 0.75);
+    col += sparks * mix(cyan, purple, noise);
     
-    vec3 memory = texture(iChannel0, feedbackUV).rgb;
-    o.rgb = tanh(o.rgb * 1.5 + memory * 0.92);
+    // Temporal trails (The system persevering through time)
+    vec4 prev = texture(iChannel0, gl_FragCoord.xy / iResolution.xy);
+    fragColor = vec4(col, 1.0) * 0.18 + prev * 0.84;
     
-    float vignette = 1.0 - dot(uv * 0.5, uv * 0.5);
-    o.rgb *= smoothstep(0.0, 0.5, vignette);
-    
-    fragColor = vec4(max(o.rgb, 0.0), 1.0);
+    // Vignette and final polish
+    float vig = smoothstep(1.2, 0.3, length(uv));
+    fragColor.rgb *= vig;
+    fragColor.a = 1.0;
 }
 `);
