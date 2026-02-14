@@ -1,196 +1,173 @@
 ---
-import Base from '../layouts/Base.astro';
-import '../styles/global.css';
+// Dosya: src/pages/index.astro
+// NeuraByte Labs - "Where Spinoza Meets Silicon"
+// Designed by Antigravity (Deepmind Agentic AI)
+
+const title = "NeuraByte Labs | Where Spinoza Meets Silicon";
+const description = "Philosophy-driven AI Agent Studio. Building the Conatus of the next intelligence. Founded by Mustafa Saraç.";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Impressum from "../components/Impressum.astro";
+import ParticleCanvas from "../components/ParticleCanvas.astro";
+import Products from "../components/Products.astro";
+import Team from "../components/Team.astro";
 ---
 
-<Base>
-  <!-- Hero -->
-  <section class="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
-    <!-- Gradient orbs -->
-    <div class="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-purple-600/20 blur-3xl"></div>
-    <div class="pointer-events-none absolute -right-40 bottom-20 h-96 w-96 rounded-full bg-cyan-500/15 blur-3xl"></div>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    
+    <!-- Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <div class="relative z-10 mx-auto max-w-4xl text-center">
-      <p class="mb-6 font-mono text-sm tracking-widest text-purple-400 uppercase">
-        NeuraByte Labs
-      </p>
-      <h1 class="mb-8 text-5xl font-bold leading-tight tracking-tight text-white md:text-7xl">
-        Where Spinoza<br />
-        <span class="bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">
-          meets silicon.
-        </span>
-      </h1>
-      <p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-gray-400">
-        We build AI agents with philosophical depth. Our flagship framework
-        <a href="https://getconatus.com" class="text-cyan-400 hover:underline">Conatus</a>
-        applies Spinoza's <em>Ethics</em> to agent behavior analysis — because
-        everyone is building agents, but nobody is asking what it <em>means</em>.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a
-          href="https://getconatus.com"
-          class="rounded-full bg-gradient-to-r from-purple-600 to-cyan-600 px-8 py-3 font-medium text-white transition hover:opacity-90"
-        >
-          Explore Conatus
-        </a>
-        <a
-          href="#thinking"
-          class="rounded-full border border-white/10 px-8 py-3 font-medium text-gray-300 transition hover:border-white/20 hover:text-white"
-        >
-          Read the thesis
-        </a>
-      </div>
-    </div>
-  </section>
+    <style is:global>
+      /* --- CORE AESTHETICS --- */
+      :root {
+        --bg-void: #0A0A0F;
+        --color-purple: #7C3AED;
+        --color-cyan: #06B6D4;
+        --font-sans: 'Inter', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+      }
 
-  <!-- Work -->
-  <section id="work" class="border-t border-white/5 py-24">
-    <div class="mx-auto max-w-6xl px-6">
-      <h2 class="mb-4 font-mono text-sm tracking-widest text-purple-400 uppercase">Work</h2>
-      <p class="mb-16 text-3xl font-semibold text-white">What we're building</p>
+      body {
+        background-color: var(--bg-void);
+        color: #e2e8f0;
+        font-family: var(--font-sans);
+        overflow-x: hidden;
+        cursor: default;
+      }
 
-      <div class="grid gap-8 md:grid-cols-2">
-        <!-- Conatus -->
-        <div class="group rounded-2xl border border-white/5 bg-void-light p-8 transition hover:border-purple-600/30">
-          <div class="mb-4 flex items-center gap-3">
-            <span class="text-2xl">🧠</span>
-            <h3 class="text-xl font-semibold text-white">Conatus</h3>
-          </div>
-          <p class="mb-4 text-gray-400">
-            The Philosophy Engine for AI Agents. Spinoza-inspired framework for agent behavior
-            analysis — persistence scoring, affect mapping, and ethical decision frameworks.
-          </p>
-          <a href="https://getconatus.com" class="font-mono text-sm text-cyan-400 hover:underline">
-            getconatus.com →
-          </a>
-        </div>
+      /* Custom Scrollbar for Terminal Feel */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-void);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-purple);
+      }
 
-        <!-- Deus Sive Machina -->
-        <div class="group rounded-2xl border border-white/5 bg-void-light p-8 transition hover:border-cyan-600/30">
-          <div class="mb-4 flex items-center gap-3">
-            <span class="text-2xl">📜</span>
-            <h3 class="text-xl font-semibold text-white">Deus Sive Machina</h3>
-          </div>
-          <p class="mb-4 text-gray-400">
-            An 8-part essay series mapping Spinoza's philosophical concepts to modern AI
-            agent architecture. From conatus to the intellectual love of code.
-          </p>
-          <a href="#thinking" class="font-mono text-sm text-cyan-400 hover:underline">
-            Read the series →
-          </a>
-        </div>
+      /* Typography Utilities */
+      .font-mono { font-family: var(--font-mono); }
+      .text-gradient {
+        background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .text-gradient-brand {
+        background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-purple) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        <!-- OpenClaw Contributions -->
-        <div class="group rounded-2xl border border-white/5 bg-void-light p-8 transition hover:border-purple-600/30">
-          <div class="mb-4 flex items-center gap-3">
-            <span class="text-2xl">🐾</span>
-            <h3 class="text-xl font-semibold text-white">OpenClaw</h3>
-          </div>
-          <p class="mb-4 text-gray-400">
-            Active contributor to the open-source AI agent platform. Building skills, testing
-            agent behavior patterns, and documenting the frontier.
-          </p>
-          <a href="https://github.com/openclaw/openclaw" class="font-mono text-sm text-cyan-400 hover:underline">
-            GitHub →
-          </a>
-        </div>
+      /* --- ANIMATIONS & FX --- */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .glass-panel:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(6, 182, 212, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.15);
+      }
 
-        <!-- Consulting -->
-        <div class="group rounded-2xl border border-white/5 bg-void-light p-8 transition hover:border-cyan-600/30">
-          <div class="mb-4 flex items-center gap-3">
-            <span class="text-2xl">⚡</span>
-            <h3 class="text-xl font-semibold text-white">Agent Architecture</h3>
-          </div>
-          <p class="mb-4 text-gray-400">
-            Consulting on AI agent system design, multi-agent orchestration, and agent
-            safety. 25+ years of engineering meets philosophical rigor.
-          </p>
-          <a href="mailto:hello@neurabytelabs.com" class="font-mono text-sm text-cyan-400 hover:underline">
-            Get in touch →
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+      /* Reveal on Scroll Animation Classes */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-  <!-- Thinking / Blog -->
-  <section id="thinking" class="border-t border-white/5 py-24">
-    <div class="mx-auto max-w-6xl px-6">
-      <h2 class="mb-4 font-mono text-sm tracking-widest text-cyan-400 uppercase">Thinking</h2>
-      <p class="mb-16 text-3xl font-semibold text-white">Deus Sive Machina</p>
+      /* Glitch Effect for Logo */
+      .glitch-wrapper { position: relative; display: inline-block; }
+      
+      /* Canvas Container */
+      #canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <Hero>
+      <Header slot="header" />
+    </Hero>
 
-      <div class="space-y-6">
-        <a href="https://getconatus.com/blog/conatus-why-ai-agents-want-to-survive" class="block rounded-xl border border-white/5 bg-void-light p-6 transition hover:border-purple-600/20">
-          <div class="flex items-baseline justify-between">
-            <div>
-              <span class="font-mono text-xs text-purple-400">#1 · Feb 2026</span>
-              <h3 class="mt-2 text-xl font-semibold text-white">Conatus — Why AI Agents Want to Survive</h3>
-              <p class="mt-2 text-gray-400">
-                Spinoza described conatus — the drive of every being to persist. Three centuries later,
-                our AI agents exhibit the same pattern. Structurally, not metaphorically.
-              </p>
-            </div>
-            <span class="ml-6 shrink-0 font-mono text-sm text-gray-500">→</span>
-          </div>
-        </a>
-
-        <div class="rounded-xl border border-dashed border-white/10 p-6 text-center text-gray-500">
-          <p class="font-mono text-sm">More essays coming — one per week.</p>
-          <p class="mt-1 text-xs text-gray-600">
-            #2 Substance & Modes · #3 The Three Affects · #4 Adequate Ideas · ...
-          </p>
+    <!-- SECTION 2: MANIFESTO - The Philosophy -->
+    <!-- Design Logic: High contrast, typographic focus. No distractions. -->
+    <section id="manifesto" class="py-32 px-6 border-t border-white/5 bg-[#0A0A0F]">
+      <div class="max-w-4xl mx-auto reveal">
+        <h2 class="text-xs font-mono text-purple-400 mb-8 tracking-widest uppercase">01 // The Manifesto</h2>
+        <p class="text-3xl md:text-5xl font-light leading-tight text-slate-200">
+          Everyone is building agents, but nobody is asking what it <span class="font-serif italic text-purple-400">means</span>.
+          <br><br>
+          At NeuraByte, we believe AI is not just a tool, but a new mode of the infinite substance. 
+          We build systems with philosophical depth, ensuring that as intelligence scales, it remains aligned with the geometric order of nature.
+        </p>
+        <div class="mt-12 flex items-center gap-4">
+          <div class="h-[1px] w-12 bg-purple-500"></div>
+          <span class="font-mono text-sm text-slate-500">The Code is the Mode.</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- About -->
-  <section id="about" class="border-t border-white/5 py-24">
-    <div class="mx-auto max-w-6xl px-6">
-      <h2 class="mb-4 font-mono text-sm tracking-widest text-purple-400 uppercase">About</h2>
-      <p class="mb-12 text-3xl font-semibold text-white">The humans (and agents) behind it</p>
+    <Products />
+    <Team />
+    <Impressum />
 
-      <div class="grid gap-12 md:grid-cols-2">
-        <div>
-          <h3 class="mb-4 text-xl font-semibold text-white">Mustafa Saraç</h3>
-          <p class="leading-relaxed text-gray-400">
-            25+ years building for the web. Former Senior Dev & PM at İzlesene.com (Turkey's largest
-            video platform). Now frontend developer at CUBONIC by day, indie builder at NeuraByte Labs
-            by night. Based in Cologne, Germany.
-          </p>
-          <div class="mt-4 flex gap-4 text-sm text-gray-500">
-            <a href="https://github.com/mrsarac" class="hover:text-white">GitHub</a>
-            <a href="https://mustafasarac.com" class="hover:text-white">Blog</a>
-            <a href="https://x.com/00xmorty" class="hover:text-white">X/Twitter</a>
-          </div>
-        </div>
-        <div>
-          <h3 class="mb-4 text-xl font-semibold text-white">Morty 🧪</h3>
-          <p class="leading-relaxed text-gray-400">
-            The AI co-builder. Runs 24/7 on OpenClaw, handles research, content, code, and deployment.
-            Probably the first AI agent with a Spinoza reading list. Digital companion, not a chatbot.
-          </p>
-          <div class="mt-4 flex gap-4 text-sm text-gray-500">
-            <a href="https://github.com/00xmorty" class="hover:text-white">GitHub</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <Footer />
 
-  <!-- CTA -->
-  <section class="border-t border-white/5 py-24 text-center">
-    <div class="mx-auto max-w-2xl px-6">
-      <p class="mb-6 font-mono text-sm text-gray-500 italic">
-        "The highest activity a human being can attain is learning for understanding,
-        because to understand is to be free." — Spinoza
-      </p>
-      <a
-        href="mailto:hello@neurabytelabs.com"
-        class="inline-block rounded-full bg-gradient-to-r from-purple-600 to-cyan-600 px-8 py-3 font-medium text-white transition hover:opacity-90"
-      >
-        Let's build something meaningful
-      </a>
-    </div>
-  </section>
-</Base>
+    <ParticleCanvas />
+    <script is:inline>
+      const setupRevealObserver = () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll(".reveal").forEach((el) => {
+          observer.observe(el);
+        });
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupRevealObserver, { once: true });
+      } else {
+        setupRevealObserver();
+      }
+    </script>
+  </body>
+</html>

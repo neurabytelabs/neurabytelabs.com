@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+const title = 'About NeuraByte Labs';
+const description = 'NeuraByte Labs is a philosophy-driven AI studio founded by Mustafa Sarac with AI co-builder Morty.';
+---
+
+<Base title={title} description={description}>
+  <Header />
+
+  <main class="relative px-6 pb-24 pt-36">
+    <div class="absolute right-0 top-20 h-[380px] w-[380px] rounded-full bg-purple-900/20 blur-[110px]"></div>
+    <div class="absolute bottom-0 left-0 h-[320px] w-[320px] rounded-full bg-cyan-900/20 blur-[110px]"></div>
+
+    <section class="relative mx-auto max-w-5xl space-y-8">
+      <header class="reveal">
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.24em] text-cyan-400">NeuraByte Labs / About</p>
+        <h1 class="text-4xl font-bold text-gradient md:text-6xl">Philosophy-Driven AI Studio</h1>
+        <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-400">
+          We build practical AI systems guided by philosophy, not hype. Our mission is to design agents that are useful,
+          resilient, and aligned with human intent as intelligence becomes more autonomous.
+        </p>
+      </header>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <article class="glass-panel rounded-2xl p-8 reveal">
+          <h2 class="mb-3 text-sm font-mono uppercase tracking-[0.2em] text-purple-400">Mission</h2>
+          <p class="leading-relaxed text-slate-300">
+            NeuraByte Labs is a philosophy-driven AI studio. We combine production engineering, systems thinking, and
+            ethics to give agentic software structure and direction. Our thesis is simple: intelligence without a clear
+            orientation becomes noise; intelligence with a coherent conatus becomes value.
+          </p>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-8 reveal">
+          <h2 class="mb-3 text-sm font-mono uppercase tracking-[0.2em] text-purple-400">Founder</h2>
+          <p class="leading-relaxed text-slate-300">
+            <strong class="text-white">Mustafa Sarac</strong> brings 25+ years of web development practice to the
+            agentic era. He is a former Senior Developer and Product Manager at <strong class="text-white">Izlesene.com</strong>,
+            where large-scale product and platform delivery shaped his engineering standards.
+          </p>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-8 reveal">
+          <h2 class="mb-3 text-sm font-mono uppercase tracking-[0.2em] text-cyan-400">AI Co-Builder: Morty</h2>
+          <p class="leading-relaxed text-slate-300">
+            Morty is our always-on AI co-builder for refactoring, architecture iteration, testing loops, and developer
+            acceleration. Human judgment sets direction; Morty amplifies execution velocity while keeping feedback cycles tight.
+          </p>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-8 reveal">
+          <h2 class="mb-3 text-sm font-mono uppercase tracking-[0.2em] text-cyan-400">Tech Stack</h2>
+          <ul class="space-y-2 text-slate-300">
+            <li><span class="font-mono text-xs text-slate-500">01</span> Astro + Tailwind for high-signal web interfaces</li>
+            <li><span class="font-mono text-xs text-slate-500">02</span> TypeScript and Python for agent services</li>
+            <li><span class="font-mono text-xs text-slate-500">03</span> LLM orchestration, tool use, and evaluation loops</li>
+            <li><span class="font-mono text-xs text-slate-500">04</span> Open-source-first workflow with pragmatic deployment</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="pt-4 reveal">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 font-mono text-xs tracking-[0.16em] text-slate-200 transition hover:border-cyan-500/50 hover:text-white"
+        >
+ BACK TO HOME          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
