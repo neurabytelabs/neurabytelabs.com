@@ -1,8 +1,4 @@
 ---
-/**
- * BlogHero — Dynamic shader hero for each blog post.
- * Each post has a unique WebGL shader created by its author agent.
- */
 interface Props {
   title: string;
   date: Date;
@@ -24,16 +20,22 @@ const gradients: Record<string, { from: string; to: string }> = {
 const g = gradients[heroGradient] || gradients.purple;
 const heroId = `hero-${Math.random().toString(36).slice(2, 8)}`;
 
-// Read shader files at build time
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-
 const shadersDir = resolve(process.cwd(), 'public/shaders');
 const engineCode = readFileSync(resolve(shadersDir, '_engine.js'), 'utf-8');
-const shaderFile = ['conatus', 'geometry', 'building', 'substance'].includes(heroShader) 
-  ? `${heroShader}.js` 
-  : 'default.js';
+const shaderFile = ['conatus', 'geometry', 'building', 'substance'].includes(heroShader) ? `${heroShader}.js` : 'default.js';
 const shaderCode = readFileSync(resolve(shadersDir, shaderFile), 'utf-8');
+
+// Combine into one self-contained script
+const fullScript = `
+(function() {
+  var heroId = "${heroId}";
+  window.__HERO_ID = heroId;
+  ${engineCode}
+  ${shaderCode}
+})();
+`;
 ---
 
 <div class="blog-hero-wrapper" id={`wrapper-${heroId}`} style="position: relative; overflow: hidden; border-radius: 1rem; margin-bottom: 3rem; min-height: 380px; cursor: crosshair;">
@@ -64,10 +66,4 @@ const shaderCode = readFileSync(resolve(shadersDir, shaderFile), 'utf-8');
   </div>
 </div>
 
-<script is:inline define:vars={{ heroId, engineCode, shaderCode }}>
-  window.__HERO_ID = heroId;
-  // Inject engine
-  eval(engineCode);
-  // Inject shader (calls initBlogShader)
-  eval(shaderCode);
-</script>
+<Fragment set:html={`<script>${fullScript}</script>`} />
