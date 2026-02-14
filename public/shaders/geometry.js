@@ -1,5 +1,4 @@
-initBlogShader(`
-#version 300 es
+initBlogShader(`#version 300 es
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
