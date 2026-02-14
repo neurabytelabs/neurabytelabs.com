@@ -48,7 +48,7 @@ void main() {
     if (length(iMouse) > 0.0) {
         vec2 m = iMouse;
         m.y = 1.0 - m.y;
-        mouseForce = (m - 0.5) * 2.0;
+        mouseForce = (0.5 - m) * 2.0;
     }
     
     vec4 o = vec4(0.0);

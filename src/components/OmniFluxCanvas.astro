@@ -83,7 +83,7 @@ void main() {
     if (length(iMouse) > 0.0) {
         vec2 m = iMouse;
         m.y = 1.0 - m.y;
-        mouseOffset = (m - 0.5) * 4.0;
+        mouseOffset = (0.5 - m) * 4.0;
     }
 
     vec2 p = (uv_norm - mouseOffset) / (.3 * scrollZoom);

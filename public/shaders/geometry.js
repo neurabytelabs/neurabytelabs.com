@@ -88,7 +88,7 @@ void main() {
     if (length(iMouse) > 0.0) {
         vec2 m = iMouse;
         m.y = 1.0 - m.y;
-        uv += (m - 0.5) * 0.5;
+        uv += (0.5 - m) * 0.5;
     }
     
     // Scale for Voronoi (5 propositions visible at once)

@@ -29,7 +29,7 @@ float hash(vec2 p) {
 
 void main() {
     vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / min(iResolution.y, iResolution.x);
-    vec2 mouse = (iMouse - 0.5);
+    vec2 mouse = (0.5 - iMouse);
     
     // The "Substance" - A central, pulsing coordinate space
     vec2 p = uv;
