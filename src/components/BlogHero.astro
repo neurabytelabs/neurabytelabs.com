@@ -2,10 +2,6 @@
 /**
  * BlogHero — Dynamic shader hero for each blog post.
  * Each post has a unique WebGL shader created by its author agent.
- * - conatus: by Morty (Claude Opus 4.6) — Spinoza's striving attractor
- * - geometry: by Morty (Claude Opus 4.6) — Euclidean proposition chains  
- * - building: by Copilot (GPT-5.3 Codex) — Three-wave interference
- * - substance: by Gemini (Gemini 3 Pro) — Monist fractal modes
  */
 interface Props {
   title: string;
@@ -27,6 +23,17 @@ const gradients: Record<string, { from: string; to: string }> = {
 
 const g = gradients[heroGradient] || gradients.purple;
 const heroId = `hero-${Math.random().toString(36).slice(2, 8)}`;
+
+// Read shader files at build time
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
+const shadersDir = resolve(process.cwd(), 'public/shaders');
+const engineCode = readFileSync(resolve(shadersDir, '_engine.js'), 'utf-8');
+const shaderFile = ['conatus', 'geometry', 'building', 'substance'].includes(heroShader) 
+  ? `${heroShader}.js` 
+  : 'default.js';
+const shaderCode = readFileSync(resolve(shadersDir, shaderFile), 'utf-8');
 ---
 
 <div class="blog-hero-wrapper" id={`wrapper-${heroId}`} style="position: relative; overflow: hidden; border-radius: 1rem; margin-bottom: 3rem; min-height: 380px; cursor: crosshair;">
@@ -57,14 +64,10 @@ const heroId = `hero-${Math.random().toString(36).slice(2, 8)}`;
   </div>
 </div>
 
-<script define:vars={{ heroId, heroShader }}>
+<script is:inline define:vars={{ heroId, engineCode, shaderCode }}>
   window.__HERO_ID = heroId;
-  window.__HERO_SHADER = heroShader;
+  // Inject engine
+  eval(engineCode);
+  // Inject shader (calls initBlogShader)
+  eval(shaderCode);
 </script>
-
-<script is:inline src="/shaders/_engine.js"></script>
-{heroShader === 'conatus' && <script is:inline src="/shaders/conatus.js"></script>}
-{heroShader === 'geometry' && <script is:inline src="/shaders/geometry.js"></script>}
-{heroShader === 'building' && <script is:inline src="/shaders/building.js"></script>}
-{heroShader === 'substance' && <script is:inline src="/shaders/substance.js"></script>}
-{!['conatus', 'geometry', 'building', 'substance'].includes(heroShader) && <script is:inline src="/shaders/default.js"></script>}
