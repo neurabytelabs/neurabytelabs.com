@@ -1,8 +1,3 @@
-/**
- * GEOMETRY OF AGENTS — Sacred geometry + dependency graphs
- * By Gemini (Gemini 3 Pro) — Complete redesign
- * Mouse: brightens connections, fragments detach
- */
 initBlogShader(`
 #version 300 es
 precision highp float;

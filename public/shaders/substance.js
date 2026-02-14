@@ -1,8 +1,3 @@
-/**
- * SUBSTANCE AND SILICON — Monist fractal modes
- * By Gemini (Gemini 3 Pro) — Enhanced particle shedding
- * Mouse: embers break off orbs, intensified glow
- */
 initBlogShader(`#version 300 es
 precision highp float;
 uniform vec2 iResolution;

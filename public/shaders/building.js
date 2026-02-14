@@ -1,8 +1,3 @@
-/**
- * BUILDING IN PUBLIC — Three energy streams converging
- * By Gemini (Gemini 3 Pro) — Complete redesign
- * Mouse: human developer attracting all three streams
- */
 initBlogShader(`
 #version 300 es
 precision highp float;

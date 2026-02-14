@@ -1,8 +1,3 @@
-/**
- * CONATUS — "The striving to persevere in being"
- * By Gemini (Gemini 3 Pro) — Redesigned with master prompt
- * Mouse: particles break off on hover, attractor persists (= conatus)
- */
 initBlogShader(`
 #version 300 es
 precision highp float;
