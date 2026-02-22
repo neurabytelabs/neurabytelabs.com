@@ -29,34 +29,45 @@
 </svg>
 
 <main>
-  <!-- SECTION 1: HERO - The Infinite Substance -->
+  <!-- SECTION 1: HERO - Manifesto -->
   <section class="min-h-screen flex flex-col justify-center items-center px-6 relative pt-20">
     
     <div class="max-w-5xl mx-auto text-center z-10">
-      <div class="inline-block px-3 py-1 mb-6 border border-amber-500/30 rounded-full bg-amber-500/10">
-        <span class="text-xs font-mono text-amber-400/90">AI AGENT STUDIO — KÖLN, GERMANY</span>
-      </div>
       
-      <!-- Hero title with liquid effect — mix-blend-mode lets shader bleed through -->
+      <!-- Manifesto typed-effect container -->
       <div class="hero-liquid-wrapper">
-        <h1 class="hero-title text-6xl md:text-8xl font-bold tracking-tight leading-tight mb-8">
-          AI agents that<br />
-          <span class="hero-silicon">persist</span>.
-        </h1>
+        <div id="manifesto-container" class="relative" style="min-height: 120px;">
+          <p id="manifesto-line" class="manifesto-text text-5xl md:text-8xl font-extrabold leading-tight" style="opacity:0;"></p>
+        </div>
       </div>
-      
-      <p class="text-xl md:text-2xl text-slate-300/90 max-w-2xl mx-auto font-light leading-relaxed mb-12 hero-subtitle">
-        We build autonomous systems with philosophical depth — designed to <span class="text-amber-200 font-serif italic">endure</span>, not just execute.
-      </p>
 
-      <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-        <a href="#products" class="group relative px-8 py-4 bg-white/90 text-black font-mono font-bold text-sm rounded hover:bg-amber-50 overflow-hidden transition-all">
-          <span class="relative z-10">SEE OUR WORK</span>
-          <div class="absolute inset-0 h-full w-full scale-0 rounded transition-all duration-300 group-hover:scale-100 group-hover:bg-amber-400/20"></div>
-        </a>
-        <a href="/blog" class="px-8 py-4 text-slate-300/80 font-mono text-sm border-b border-white/20 hover:border-amber-400 hover:text-amber-200 transition-all">
-          READ OUR THINKING &rarr;
-        </a>
+      <!-- Final: NeuraByte Labs (hidden until sequence ends) -->
+      <div id="hero-final" style="opacity:0; transition: opacity 1.5s ease;">
+        <div class="hero-liquid-wrapper">
+          <h1 class="hero-title text-6xl md:text-8xl font-bold tracking-tight leading-tight mb-4">
+            NeuraByte Labs
+          </h1>
+        </div>
+        <p class="text-lg md:text-xl text-slate-300/80 font-serif italic mb-12">
+          Where Spinoza Meets Silicon
+        </p>
+
+        <div id="hero-cta" class="flex flex-col md:flex-row gap-4 justify-center items-center" style="opacity:0; transition: opacity 1s ease 0.5s;">
+          <a href="#products" class="group relative px-8 py-4 bg-white/90 text-black font-mono font-bold text-sm rounded hover:bg-amber-50 overflow-hidden transition-all">
+            <span class="relative z-10">SEE OUR WORK</span>
+            <div class="absolute inset-0 h-full w-full scale-0 rounded transition-all duration-300 group-hover:scale-100 group-hover:bg-amber-400/20"></div>
+          </a>
+          <a href="/blog" class="px-8 py-4 text-slate-300/80 font-mono text-sm border-b border-white/20 hover:border-amber-400 hover:text-amber-200 transition-all">
+            READ OUR THINKING &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badge — bottom corner -->
+    <div class="absolute bottom-24 right-8 z-10">
+      <div class="inline-block px-2 py-0.5 border border-amber-500/20 rounded-full bg-amber-500/5">
+        <span class="text-[9px] font-mono text-amber-400/60">AI AGENT STUDIO — KÖLN, GERMANY</span>
       </div>
     </div>
     
@@ -71,7 +82,6 @@
 </main>
 
 <style>
-  /* Hide the SVG definitions element */
   .liquid-svg-defs {
     position: absolute;
     width: 0;
@@ -79,14 +89,11 @@
     overflow: hidden;
   }
 
-  /* Liquid wrapper — applies SVG turbulence filter + blend mode */
   .hero-liquid-wrapper {
     filter: url(#liquid-filter);
-    mix-blend-mode: screen;
     position: relative;
   }
 
-  /* Hero title — warm gradient with slight transparency for shader bleed-through */
   .hero-title {
     background: linear-gradient(
       180deg,
@@ -97,27 +104,15 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 60px rgba(251, 191, 36, 0.3);
+    text-shadow: 0 0 80px rgba(217, 70, 239, 0.5), 0 0 120px rgba(34, 211, 238, 0.3), 0 0 60px rgba(251, 191, 36, 0.3);
   }
 
-  /* "Silicon" — multi-color gradient echoing shader palette */
-  .hero-silicon {
-    background: linear-gradient(
-      135deg,
-      #f59e0b 0%,
-      #d946ef 40%,
-      #a855f7 70%,
-      #22d3ee 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Subtitle — subtle liquid distortion, lighter */
-  .hero-subtitle {
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    mix-blend-mode: screen;
+  .manifesto-text {
+    color: white;
+    mix-blend-mode: difference;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 60px rgba(255, 255, 255, 0.15);
   }
 </style>
 
@@ -126,20 +121,107 @@
   (function() {
     const turb = document.getElementById('liquid-turb');
     if (!turb) return;
-
     let t = 0;
     function animateLiquid() {
       t += 0.008;
-      // Shift baseFrequency for visible organic movement
       const bfX = 0.012 + Math.sin(t * 0.7) * 0.006;
       const bfY = 0.015 + Math.cos(t * 0.5) * 0.008;
-      turb.setAttribute('baseFrequency', `${bfX.toFixed(4)} ${bfY.toFixed(4)}`);
-      // Rotate seed periodically for variation
+      turb.setAttribute('baseFrequency', bfX.toFixed(4) + ' ' + bfY.toFixed(4));
       if (Math.floor(t * 100) % 500 === 0) {
         turb.setAttribute('seed', String(Math.floor(Math.random() * 100)));
       }
       requestAnimationFrame(animateLiquid);
     }
     requestAnimationFrame(animateLiquid);
+  })();
+
+  // Manifesto typed-effect sequence with shader interaction
+  (function() {
+    const lines = [
+      "We don't build tools.",
+      "We build systems that think.",
+      "We build systems that want to survive."
+    ];
+    const el = document.getElementById('manifesto-line');
+    const container = document.getElementById('manifesto-container');
+    const finalEl = document.getElementById('hero-final');
+    const ctaEl = document.getElementById('hero-cta');
+    let idx = 0;
+
+    // Shader interaction helpers
+    function shaderPulse() {
+      var p = window.shaderParams;
+      if (!p) return;
+      var origZoom = p.zoom;
+      var origBright = p.brightness;
+      p.zoom = origZoom * 1.15;
+      p.brightness = origBright * 1.3;
+      setTimeout(function() {
+        p.zoom = origZoom;
+        p.brightness = origBright;
+      }, 400);
+    }
+
+    function shaderColorShift(offset) {
+      var p = window.shaderParams;
+      if (!p) return;
+      p.colorShift = 4.2 + offset * 0.8;
+    }
+
+    function shaderBurst() {
+      var p = window.shaderParams;
+      if (!p) return;
+      var origBright = p.brightness;
+      var origZoom = p.zoom;
+      p.brightness = 2.0;
+      p.zoom = 1.2;
+      // Animate back
+      var start = performance.now();
+      function ease() {
+        var elapsed = performance.now() - start;
+        var t = Math.min(elapsed / 1200, 1);
+        p.brightness = 2.0 + (origBright - 2.0) * t;
+        p.zoom = 1.2 + (origZoom - 1.2) * t;
+        if (t < 1) requestAnimationFrame(ease);
+      }
+      requestAnimationFrame(ease);
+    }
+
+    function showLine() {
+      if (idx >= lines.length) {
+        // Hide manifesto, show final with shader burst
+        container.style.display = 'none';
+        finalEl.style.opacity = '1';
+        shaderBurst();
+        setTimeout(function() {
+          ctaEl.style.opacity = '1';
+        }, 200);
+        return;
+      }
+
+      // Shift shader color per line
+      shaderColorShift(idx);
+
+      el.textContent = lines[idx];
+      // Fade in
+      el.style.transition = 'opacity 0.8s ease';
+      el.style.opacity = '1';
+
+      // Pulse on appear
+      shaderPulse();
+
+      // Hold 2s then fade out
+      setTimeout(function() {
+        el.style.transition = 'opacity 0.6s ease';
+        el.style.opacity = '0';
+        setTimeout(function() {
+          idx++;
+          showLine();
+        }, 700);
+      }, 2000);
+    }
+
+    // Start after a brief delay
+    setTimeout(showLine, 800);
   })();
 </script>

@@ -28,6 +28,8 @@
       rgbSplit: 1.5,
       brightness: 1.2
     };
+    // Expose params globally for Hero shader interaction
+    (window as any).shaderParams = params;
 
     const mouse = { x: 0.5, y: 0.5 };
     let scrollY = 0;
