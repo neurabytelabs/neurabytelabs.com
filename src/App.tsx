@@ -456,9 +456,9 @@ export default function App() {
                     value={intent}
                     onChange={(e) => setIntent(e.target.value)}
                     className="bg-transparent w-full outline-none font-mono text-sm sm:text-base text-ratio placeholder:text-ratio/20"
-                    placeholder="Niyetinizi belirtin (örn: 'about', 'products', 'contact', 'impressum' veya CMD+K)"
+                    placeholder="State your intent (e.g. 'about', 'products', 'contact', 'impressum' or CMD+K)"
                     data-intent="omni_input"
-                    aria-label="Niyet Alanı"
+                    aria-label="Intent Field"
                     disabled={systemState !== 'IDLE'}
                   />
                   {systemState !== 'IDLE' ? (
@@ -482,10 +482,10 @@ export default function App() {
             exit={{ opacity: 0, y: 50 }}
             className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-8 sm:w-96 bg-void/95 backdrop-blur-xl border border-ratio/20 p-5 z-50 font-mono text-xs text-ratio/70 box-glow flex flex-col gap-4"
           >
-            <p className="leading-relaxed">Diese Website verwendet ausschließlich technisch notwendige Cookies zur Gewährleistung der Systemstabilität.</p>
+            <p className="leading-relaxed">This website uses only technically necessary cookies to ensure system stability.</p>
             <div className="flex justify-between items-center pt-2 border-t border-ratio/10">
-              <button onClick={() => navigateTo('datenschutz')} className="hover:text-spark transition-colors underline decoration-ratio/30 underline-offset-4">Mehr erfahren</button>
-              <button onClick={() => setCookieAccepted(true)} className="bg-spark/10 hover:bg-spark/20 text-spark border border-spark/30 px-4 py-2 transition-colors uppercase tracking-widest">Verstanden</button>
+              <button onClick={() => navigateTo('datenschutz')} className="hover:text-spark transition-colors underline decoration-ratio/30 underline-offset-4">Learn more</button>
+              <button onClick={() => setCookieAccepted(true)} className="bg-spark/10 hover:bg-spark/20 text-spark border border-spark/30 px-4 py-2 transition-colors uppercase tracking-widest">Understood</button>
             </div>
           </motion.div>
         )}
@@ -496,7 +496,7 @@ export default function App() {
         <div className="flex flex-col gap-3 items-center sm:items-start" data-agent-action="system_status">
           <div className="flex items-center gap-4">
             <div className="w-12 h-px bg-ratio/20 hidden sm:block"></div>
-            {systemState === 'PROCESSING' ? 'Analiz ediliyor...' : systemState === 'RESPONDING' ? 'Yanıt üretiliyor...' : 'Sistem stabil.'}
+            {systemState === 'PROCESSING' ? 'Analyzing...' : systemState === 'RESPONDING' ? 'Generating response...' : 'System stable.'}
           </div>
           <div className="flex gap-4 sm:ml-16">
             <button onClick={() => navigateTo('impressum')} className="hover:text-spark transition-colors">Impressum</button>
