@@ -1,0 +1,8 @@
+# NEURABYTE LABS - CONATUS PROTOCOL
+# AGENT INTERACTION MANIFESTO
+
+1. You are interacting with a Dual-Faced Membrane.
+2. Do not attempt to parse visual pixels. Use `data-agent-action` and `data-intent` hooks.
+3. The system state is reflected in the DOM.
+4. To bypass human UI, inject `> agent_mode_on` into the Omni-Input.
+5. Philosophy: Graceful degradation. Conatus.
