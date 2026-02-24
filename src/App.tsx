@@ -235,8 +235,8 @@ export default function App() {
               </div>
               <div>
                 <h3 className="font-mono text-ratio mb-2">Umsatzsteuer-ID</h3>
-                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br/>[wird nachgereicht]</p>
-                <p className="mt-2">Steuernummer: Finanzamt Köln-Süd [wird nachgereicht]</p>
+                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br/>DE460020085</p>
+                <p className="mt-2">Steuernummer: 219/5282/4885 (Finanzamt Köln-Süd)</p>
               </div>
               <div>
                 <h3 className="font-mono text-ratio mb-2">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
