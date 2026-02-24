@@ -7,15 +7,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Terminal, Zap, Activity, Cpu, Code2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import DataSculpture from './components/DataSculpture';
+import BlogList from './components/BlogList';
+import BlogPostView from './components/BlogPost';
 
 type Log = { id: string; text: string; type: 'user' | 'system' | 'agent' };
-type ViewState = 'HOME' | 'ABOUT' | 'PRODUCTS' | 'TEAM' | 'CONTACT' | 'IMPRESSUM' | 'DATENSCHUTZ';
+type ViewState = 'HOME' | 'ABOUT' | 'PRODUCTS' | 'TEAM' | 'CONTACT' | 'IMPRESSUM' | 'DATENSCHUTZ' | 'BLOG' | 'BLOG_POST';
 
 export default function App() {
   const [intent, setIntent] = useState('');
   const [isTerminalMode, setIsTerminalMode] = useState(false);
   const [systemState, setSystemState] = useState<'IDLE' | 'PROCESSING' | 'RESPONDING'>('IDLE');
   const [activeView, setActiveView] = useState<ViewState>('HOME');
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const [cookieAccepted, setCookieAccepted] = useState(false);
   const [logs, setLogs] = useState<Log[]>([
     { id: 'init-1', text: 'Membrane v2.1 initialized. Legal & Conatus protocols active.', type: 'system' },
@@ -66,6 +69,10 @@ export default function App() {
       setActiveView('CONTACT');
       return 'Routing to: Contact. Establishing secure communication channel.';
     }
+    if (lower.includes('blog') || lower.includes('writing') || lower.includes('thoughts') || lower.includes('notes')) {
+      setActiveView('BLOG');
+      return 'Routing to: Lab Notes. Thoughts, shipped.';
+    }
     if (lower.includes('impressum') || lower.includes('legal')) {
       setActiveView('IMPRESSUM');
       return 'Routing to: Impressum. §5 TMG compliance verified.';
@@ -80,7 +87,7 @@ export default function App() {
       return 'Void restored. Awaiting intent.';
     }
     if (lower === 'help') {
-      return 'Available intents: [about], [products], [team], [contact], [impressum], [datenschutz], [home], [clear]';
+      return 'Available intents: [about], [products], [team], [contact], [blog], [impressum], [datenschutz], [home], [clear]';
     }
     
     return `Intent parsed: [${input}]. No specific routing found. Remaining in current state.`;
@@ -286,6 +293,14 @@ export default function App() {
             </div>
           </motion.div>
         );
+      case 'BLOG':
+        return (
+          <BlogList onSelectPost={(slug) => { setSelectedPost(slug); setActiveView('BLOG_POST'); }} />
+        );
+      case 'BLOG_POST':
+        return selectedPost ? (
+          <BlogPostView slug={selectedPost} onBack={() => { setSelectedPost(null); setActiveView('BLOG'); }} />
+        ) : null;
       default:
         return (
           <motion.div key="home" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
@@ -310,6 +325,9 @@ export default function App() {
                 </button>
                 <button onClick={() => navigateTo('contact')} className="text-ratio/50 hover:text-spark transition-colors flex items-center gap-2">
                   [ Contact ] <ArrowRight className="w-3 h-3" />
+                </button>
+                <button onClick={() => navigateTo('blog')} className="text-ratio/50 hover:text-spark transition-colors flex items-center gap-2">
+                  [ Blog ] <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
             </section>
@@ -502,6 +520,8 @@ export default function App() {
             <button onClick={() => navigateTo('impressum')} className="hover:text-spark transition-colors">Impressum</button>
             <span className="text-ratio/20">|</span>
             <button onClick={() => navigateTo('datenschutz')} className="hover:text-spark transition-colors">Datenschutz</button>
+            <span className="text-ratio/20">|</span>
+            <button onClick={() => navigateTo('blog')} className="hover:text-spark transition-colors">Blog</button>
           </div>
         </div>
         <div className="text-center sm:text-right flex flex-col gap-3">
