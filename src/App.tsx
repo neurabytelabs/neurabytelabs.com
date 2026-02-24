@@ -296,8 +296,7 @@ export default function App() {
                 <span className="text-ratio/40 italic font-sans">We build infrastructure.</span>
               </h2>
               <p className="text-ratio/60 leading-relaxed text-lg sm:text-xl font-sans max-w-2xl font-light">
-                İnsanlar için minimalist, felsefi ve zamansız bir görsel deneyim. 
-                Otonom agent'lar için doğrudan bir API. Piksellerin ardında yatan saf niyet akışı.
+                AI that holds. Under load, under pressure, under uncertainty. Built in Köln. Informed by 350 years of philosophical thinking.
               </p>
               <div className="flex flex-wrap gap-4 pt-4 font-mono text-xs uppercase tracking-widest">
                 <button onClick={() => navigateTo('about')} className="text-ratio/50 hover:text-spark transition-colors flex items-center gap-2">
