@@ -167,7 +167,7 @@ export default function App() {
                 <h3 className="font-mono text-xl text-ratio">Mustafa Saraç</h3>
                 <div className="font-mono text-xs text-spark tracking-widest uppercase mb-4 mt-1">Founder / Architect</div>
                 <p className="font-sans text-ratio/70 font-light leading-relaxed max-w-xl">
-                  25+ years of shipping code. Former Senior Dev & PM at İzlesene.com. Now bridging the gap between classical web engineering and the agentic future. Based in Köln, Germany.
+                  Shipping web products since 2000. By day, frontend developer at CUBONIC — building interfaces for home appliances. By night, founder of NeuraByte Labs — designing autonomous agent systems informed by philosophy. 25+ years of engineering, now focused on where classical craft meets the agentic future. Based in Köln, Germany.
                 </p>
               </div>
               <div className="border-l-2 border-ratio/20 pl-6 py-2">
