@@ -13,11 +13,22 @@ import BlogPostView from './components/BlogPost';
 type Log = { id: string; text: string; type: 'user' | 'system' | 'agent' };
 type ViewState = 'HOME' | 'ABOUT' | 'PRODUCTS' | 'TEAM' | 'CONTACT' | 'IMPRESSUM' | 'DATENSCHUTZ' | 'BLOG' | 'BLOG_POST';
 
+// Yalnız yasal sayfaların kendi adresi var; diğer görünümler '/' altında kalır.
+const LEGAL_PATHS: Partial<Record<ViewState, string>> = { IMPRESSUM: '/impressum', DATENSCHUTZ: '/datenschutz' };
+const LEGAL_TITLES: Partial<Record<ViewState, string>> = { IMPRESSUM: 'Impressum', DATENSCHUTZ: 'Datenschutzerklärung' };
+
+const viewFromPath = (pathname: string): ViewState => {
+  const path = pathname.replace(/\/+$/, '').toLowerCase();
+  if (path === '/impressum') return 'IMPRESSUM';
+  if (path === '/datenschutz') return 'DATENSCHUTZ';
+  return 'HOME';
+};
+
 export default function App() {
   const [intent, setIntent] = useState('');
   const [isTerminalMode, setIsTerminalMode] = useState(false);
   const [systemState, setSystemState] = useState<'IDLE' | 'PROCESSING' | 'RESPONDING'>('IDLE');
-  const [activeView, setActiveView] = useState<ViewState>('HOME');
+  const [activeView, setActiveViewState] = useState<ViewState>(() => viewFromPath(window.location.pathname));
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const [cookieAccepted, setCookieAccepted] = useState(false);
   const [logs, setLogs] = useState<Log[]>([
@@ -25,6 +36,25 @@ export default function App() {
     { id: 'init-2', text: 'Data sculpture synced. Awaiting intent.', type: 'system' }
   ]);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Görünümü değiştirirken adres çubuğunu da eşle (/impressum, /datenschutz, diğerleri '/').
+  const setActiveView = (view: ViewState) => {
+    setActiveViewState(view);
+    const target = LEGAL_PATHS[view] ?? '/';
+    if (window.location.pathname !== target) window.history.pushState(null, '', target);
+  };
+
+  // Geri/ileri düğmesi ve sayfa başlığı
+  useEffect(() => {
+    const onPopState = () => setActiveViewState(viewFromPath(window.location.pathname));
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  useEffect(() => {
+    const legalTitle = LEGAL_TITLES[activeView];
+    document.title = legalTitle ? `${legalTitle} — NeuraByte Labs` : 'NeuraByte Labs — Where Spinoza Meets Silicon';
+  }, [activeView]);
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll terminal
@@ -75,7 +105,7 @@ export default function App() {
     }
     if (lower.includes('impressum') || lower.includes('legal')) {
       setActiveView('IMPRESSUM');
-      return 'Routing to: Impressum. §5 TMG compliance verified.';
+      return 'Routing to: Impressum. §5 DDG compliance verified.';
     }
     if (lower.includes('datenschutz') || lower.includes('privacy')) {
       setActiveView('DATENSCHUTZ');
@@ -93,11 +123,9 @@ export default function App() {
     return `Intent parsed: [${input}]. No specific routing found. Remaining in current state.`;
   };
 
-  const handleIntentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!intent.trim()) return;
-
-    const userText = intent.trim();
+  const submitIntent = (text: string) => {
+    const userText = text.trim();
+    if (!userText) return;
     setIntent('');
     setSystemState('PROCESSING');
 
@@ -118,9 +146,15 @@ export default function App() {
     }, 600);
   };
 
+  const handleIntentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    submitIntent(intent);
+  };
+
+  // setIntent + handleIntentSubmit eski `intent` değerini okuyordu (state güncellemesi gecikir),
+  // bu yüzden düğmeler hiçbir şey yapmıyordu. Metni doğrudan ver.
   const navigateTo = (intentStr: string) => {
-    setIntent(intentStr);
-    handleIntentSubmit({ preventDefault: () => {} } as any);
+    submitIntent(intentStr);
   };
 
   const renderView = () => {
@@ -226,7 +260,7 @@ export default function App() {
             <h2 className="font-mono text-sm tracking-[0.2em] text-spark uppercase">Impressum</h2>
             <div className="font-sans text-sm text-ratio/70 space-y-6 font-light leading-relaxed">
               <div>
-                <h3 className="font-mono text-ratio mb-2">Angaben gemäß § 5 TMG</h3>
+                <h3 className="font-mono text-ratio mb-2">Angaben gemäß § 5 DDG</h3>
                 <p>Mustafa Saraç<br/>NeuraByte Labs<br/>Remigiusstr 39<br/>50937 Köln<br/>Deutschland</p>
               </div>
               <div>
@@ -239,19 +273,16 @@ export default function App() {
                 <p className="mt-2">Steuernummer: 219/5282/4885 (Finanzamt Köln-Süd)</p>
               </div>
               <div>
-                <h3 className="font-mono text-ratio mb-2">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+                <h3 className="font-mono text-ratio mb-2">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
                 <p>Mustafa Saraç<br/>Remigiusstr 39<br/>50937 Köln</p>
               </div>
               <div>
                 <h3 className="font-mono text-ratio mb-2">Streitschlichtung</h3>
-                <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br/>
-                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noreferrer" className="text-spark hover:underline">https://ec.europa.eu/consumers/odr/</a><br/>
-                Unsere E-Mail-Adresse finden Sie oben im Impressum.<br/>
-                Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+                <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
               </div>
               <div>
                 <h3 className="font-mono text-ratio mb-2">Haftung für Inhalte & Links</h3>
-                <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.</p>
+                <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.</p>
               </div>
             </div>
           </motion.div>
@@ -502,7 +533,7 @@ export default function App() {
           >
             <p className="leading-relaxed">This website uses only technically necessary cookies to ensure system stability.</p>
             <div className="flex justify-between items-center pt-2 border-t border-ratio/10">
-              <button onClick={() => navigateTo('datenschutz')} className="hover:text-spark transition-colors underline decoration-ratio/30 underline-offset-4">Learn more</button>
+              <a href="/datenschutz" onClick={(e) => { e.preventDefault(); navigateTo('datenschutz'); }} className="hover:text-spark transition-colors underline decoration-ratio/30 underline-offset-4">Learn more</a>
               <button onClick={() => setCookieAccepted(true)} className="bg-spark/10 hover:bg-spark/20 text-spark border border-spark/30 px-4 py-2 transition-colors uppercase tracking-widest">Understood</button>
             </div>
           </motion.div>
@@ -517,9 +548,9 @@ export default function App() {
             {systemState === 'PROCESSING' ? 'Analyzing...' : systemState === 'RESPONDING' ? 'Generating response...' : 'System stable.'}
           </div>
           <div className="flex gap-4 sm:ml-16">
-            <button onClick={() => navigateTo('impressum')} className="hover:text-spark transition-colors">Impressum</button>
+            <a href="/impressum" onClick={(e) => { e.preventDefault(); navigateTo('impressum'); }} className="hover:text-spark transition-colors">Impressum</a>
             <span className="text-ratio/20">|</span>
-            <button onClick={() => navigateTo('datenschutz')} className="hover:text-spark transition-colors">Datenschutz</button>
+            <a href="/datenschutz" onClick={(e) => { e.preventDefault(); navigateTo('datenschutz'); }} className="hover:text-spark transition-colors">Datenschutz</a>
             <span className="text-ratio/20">|</span>
             <button onClick={() => navigateTo('blog')} className="hover:text-spark transition-colors">Blog</button>
           </div>
