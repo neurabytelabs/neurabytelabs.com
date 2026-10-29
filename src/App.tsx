@@ -278,10 +278,7 @@ export default function App() {
               </div>
               <div>
                 <h3 className="font-mono text-ratio mb-2">Streitschlichtung</h3>
-                <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br/>
-                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noreferrer" className="text-spark hover:underline">https://ec.europa.eu/consumers/odr/</a><br/>
-                Unsere E-Mail-Adresse finden Sie oben im Impressum.<br/>
-                Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+                <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
               </div>
               <div>
                 <h3 className="font-mono text-ratio mb-2">Haftung für Inhalte & Links</h3>

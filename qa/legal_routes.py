@@ -42,6 +42,10 @@ try:
                 check("Impressum: § 5 DDG", "§ 5 DDG" in txt)
                 check("Impressum: § 18 Abs. 2 MStV", "§ 18 Abs. 2 MStV" in txt)
                 check("Impressum: TMG/RStV atfı yok", "TMG" not in txt and "RStV" not in txt)
+                check("Impressum: kapanmış AB OS platformu bağlantısı yok",
+                      pg.locator('a[href*="ec.europa.eu/consumers/odr"]').count() == 0 and "Online-Streitbeilegung" not in txt)
+                check("Impressum: Verbraucherschlichtung cümlesi duruyor", "Verbraucherschlichtungsstelle" in txt)
+                check("Impressum: adres değişmedi (Remigiusstr 39, 50937 Köln)", "Remigiusstr 39" in txt and "50937 Köln" in txt)
 
         pg.goto(BASE + "/")
         pg.wait_for_timeout(500)
